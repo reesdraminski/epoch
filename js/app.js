@@ -21,6 +21,9 @@ const minutesDisplay = document.getElementById("minutesDisplay");
 const secondsBar = document.getElementById("secondsProgress");
 const secondsDisplay = document.getElementById("secondsDisplay");
 
+const lastMilestoneEl = document.getElementById("lastMilestone");
+const nextMilestoneEl = document.getElementById("nextMilestone");
+
 // the time that is being counted from
 let epoch;
 
@@ -37,10 +40,10 @@ let epoch;
         epoch = new Date(epoch);
 
         // calculate elapsed time
-        calculateTime();
+        updateDisplay();
 
         // update elapsed time every second
-        setInterval(calculateTime, 1000);
+        setInterval(updateDisplay, 1000);
     }
     // if the user has not defined an epoch
     else
@@ -65,19 +68,19 @@ let epoch;
             // hide input input screen
             document.getElementById("inputScreen").style.display = "none";
 
-            // calculate elapsed time
-            calculateTime();
+            // update display right now so we don't have to wait a second
+            updateDisplay();
 
-            // update elapsed time every second
-            setInterval(calculateTime, 1000);
+            // update display every second
+            setInterval(updateDisplay, 1000);
         }
     }
 })();
 
 /**
- * Calculate the elapsed time since the starting point.
+ * Calculate the elapsed time since the starting point and update the bars.
  */
-function calculateTime() {
+function updateDisplay() {
     // get the current time in milliseconds
     const now = new Date().getTime();
 
@@ -85,7 +88,7 @@ function calculateTime() {
     let elapsed = Math.floor((now - epoch) / 1000);
 
     const years = Math.floor(elapsed / (365 * 24 * 60 * 60));
-    elapsed = elapsed - years * (30 * 24 * 60 * 60);
+    elapsed = elapsed - years * (365 * 24 * 60 * 60);
 
     // hide years if there haven't been any that have elapsed
     if (years === 0)
@@ -127,7 +130,7 @@ function calculateTime() {
     const minutes = Math.floor(elapsed / 60);
 
     // hide minutes if there haven't been any that have elapsed
-    if (minutes === 0 && minutes === 0)
+    if (minutes === 0 && hours === 0)
     {
         minutesSection.style.display = "none";
     }
@@ -150,4 +153,40 @@ function calculateTime() {
     hoursDisplay.innerText = `${hours} ${hours == 1 ? "hour" : "hours"}`;
     minutesDisplay.innerText = `${minutes} ${minutes == 1 ? "minute" : "minutes"}`;
     secondsDisplay.innerText = `${seconds} ${seconds == 1 ? "second" : "seconds"}`;
+
+    // calculate last and next milestones
+    let lastMilestone = "", nextMilestone = "";
+    if (days === 0)
+    {
+        lastMilestone = "N/A";
+        nextMilestone = "1 day";
+    }
+    else
+    {
+        // get last multiple of 5 days, or last month
+        const last = Math.floor(days / 5) * 5;
+        if (last % 30 === 0)
+        {
+            lastMilestone = `${last / 30} ${last / 30 == 1 ? "month" : "months"}`;
+        }
+        else
+        {
+            lastMilestone = `${last} days`;
+        }
+
+        // get next multiple of 5 days, or next month
+        const next = Math.ceil(days / 5) * 5;
+        if (next % 30 === 0)
+        {
+            nextMilestone = `${next / 30} ${next / 30 == 1 ? "month" : "months"}`;
+        }
+        else
+        {
+            nextMilestone = `${next} days`;
+        }
+    }
+
+    // update milestone displays
+    lastMilestoneEl.innerHTML = lastMilestone;
+    nextMilestoneEl.innerHTML = nextMilestone;
 }
