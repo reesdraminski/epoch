@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>streak</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+        <h1 style="text-align: center;">epoch</h1>
+
+        <section id="inputScreen" style="margin-bottom: 0.5em; text-align: center; display: none">
+            <p style="margin-bottom: 0;">
+                Enter start date and time here:
+            </p>
+
+            <input id="userInput" type="datetime-local"/>
+
+            <p>
+                <button id="saveDatetime">Save</button>
+            </p>
+        </section>
+
+        <section id="bars">
+            <section id="yearsSection">
+                <progress id="yearsProgress" max="100"></progress>
+                <span id="yearsDisplay">0 years</span>
+            </section>
+
+            <section id="monthsSection">
+                <progress id="monthsProgress" max="11"></progress>
+                <span id="monthsDisplay">0 months</span>
+            </section>
+
+            <section id="daysSection">
+                <progress id="daysProgress" max="29"></progress>
+                <span id="daysDisplay">0 days</span>
+            </section>
+
+            <section id="hoursSection">
+                <progress id="hoursProgress" max="23"></progress>
+                <span id="hoursDisplay">0 hours</span>
+            </section>
+        
+            <section id="minutesSection">
+                <progress id="minutesProgress" max="59"></progress>
+                <span id="minutesDisplay">0 minutes</span>
+            </section>
+        
+            <section id="secondsSection">
+                <progress id="secondsProgress" max="59"></progress>
+                <span id="secondsDisplay">0 seconds</span>
+            </section>
+        </section>
+
+        <script src="js/app.js"></script>
+    </body>
+</html>

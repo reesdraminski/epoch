@@ -1,0 +1,50 @@
+body {
+    font-family: sans-serif;
+}
+
+progress {
+    margin-top: 2px;
+
+    border-radius: 4px;
+
+    width: 60%;
+    height: 25px;
+
+    -webkit-appearance: none;
+}
+
+/* https://css-tricks.com/html5-progress-element/ */
+progress::-webkit-progress-value::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    border-radius: 100%;
+    right: 7px;
+    top: 7px;
+    background-color: white;
+}
+
+progress::-webkit-progress-bar {
+    background: #214e65;
+}
+
+#monthsProgress::-webkit-progress-value {
+    background: #26e062;
+}
+
+#daysProgress::-webkit-progress-value {
+    background: #1bc5a8;
+}
+
+#hoursProgress::-webkit-progress-value {
+    background: #34bdff;
+}
+
+#minutesProgress::-webkit-progress-value {
+    background: #2dace5;
+}
+
+#secondsProgress::-webkit-progress-value {
+    background: #7b85d2;
+}
