@@ -165,13 +165,23 @@ function updateDisplay() {
     {
         // get last multiple of 5 days, or last month
         const last = Math.floor(days / 5) * 5;
-        if (last % 30 === 0)
+
+        // if the last milestone was a month milestone
+        if (last % 30 === 0 && last !== 0)
         {
             lastMilestone = `${last / 30} ${last / 30 == 1 ? "month" : "months"}`;
         }
         else
         {
-            lastMilestone = `${last} days`;
+            // get the one day milestone
+            if (last === 0 && days === 1)
+            {
+                lastMilestone = `1 day`;
+            }
+            else
+            {
+                lastMilestone = `${last} days`;
+            }
         }
 
         // get next multiple of 5 days, or next month
