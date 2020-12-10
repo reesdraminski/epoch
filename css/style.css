@@ -21,8 +21,16 @@ progress {
     -webkit-appearance: none;
 }
 
+progress[value]::-webkit-progress-bar {
+    border-radius: 4px;
+}
+
+progress[value]::-webkit-progress-value {
+    border-radius: 4px;
+}
+
 /* https://css-tricks.com/html5-progress-element/ */
-progress::-webkit-progress-value::after {
+progress[value]::-webkit-progress-bar::after {
     content: '';
     width: 6px;
     height: 6px;
