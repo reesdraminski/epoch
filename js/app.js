@@ -174,7 +174,7 @@ function updateDisplay() {
         else
         {
             // get the one day milestone
-            if (last === 0 && days === 1)
+            if (last === 0 && days < 5)
             {
                 lastMilestone = `1 day`;
             }
