@@ -190,6 +190,11 @@ function updateDisplay() {
         {
             nextMilestone = `${next / 30} ${next / 30 == 1 ? "month" : "months"}`;
         }
+        // if currently on a milestone, add five days to get next milestone
+        else if (days % 5 === 0)
+        {
+            nextMilestone = `${next + 5} days`;
+        }
         else
         {
             nextMilestone = `${next} days`;
