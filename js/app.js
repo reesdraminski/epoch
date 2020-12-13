@@ -24,6 +24,8 @@ const secondsDisplay = document.getElementById("secondsDisplay");
 const lastMilestoneEl = document.getElementById("lastMilestone");
 const nextMilestoneEl = document.getElementById("nextMilestone");
 
+const setEpochButton = document.getElementById("setEpoch");
+
 // the time that is being counted from
 let epoch;
 
@@ -33,6 +35,8 @@ let epoch;
 (function initUI() {
     // get epoch from storage
     epoch = localStorage.getItem("epoch");
+
+    setEpochButton.onclick = getEpoch;
 
     // if the user has defined an epoch
     if (epoch)
@@ -48,34 +52,40 @@ let epoch;
     // if the user has not defined an epoch
     else
     {
-        // show input screen
-        document.getElementById("inputScreen").style.display = "";
-
-        // hide bars read out
-        document.getElementById("bars").style.display = "none";
-
-        // bind to submit button
-        document.getElementById("saveDatetime").onclick = () => {
-            // save date time
-            localStorage.setItem("epoch", document.getElementById("userInput").value);
-
-            // set as epoch
-            epoch = new Date(document.getElementById("userInput").value);
-
-            // show bars read out
-            document.getElementById("bars").style.display = "";
-
-            // hide input input screen
-            document.getElementById("inputScreen").style.display = "none";
-
-            // update display right now so we don't have to wait a second
-            updateDisplay();
-
-            // update display every second
-            setInterval(updateDisplay, 1000);
-        }
+        getEpoch();
     }
 })();
+
+function getEpoch() {
+    // show input screen
+    document.getElementById("inputScreen").style.display = "";
+
+    // hide bars read out
+    document.getElementById("bars").style.display = "none";
+    document.getElementById("milestones").style.display = "none";
+
+    // bind to submit button
+    document.getElementById("saveDatetime").onclick = () => {
+        // save date time
+        localStorage.setItem("epoch", document.getElementById("userInput").value);
+
+        // set as epoch
+        epoch = new Date(document.getElementById("userInput").value);
+
+        // show bars read out
+        document.getElementById("bars").style.display = "";
+        document.getElementById("milestones").style.display = "";
+
+        // hide input input screen
+        document.getElementById("inputScreen").style.display = "none";
+
+        // update display right now so we don't have to wait a second
+        updateDisplay();
+
+        // update display every second
+        setInterval(updateDisplay, 1000);
+    }
+}
 
 /**
  * Calculate the elapsed time since the starting point and update the bars.
