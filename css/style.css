@@ -20,6 +20,25 @@ button {
     padding: .75em;
 }
 
+#links {
+    display: flex; 
+    justify-content: center; 
+
+    margin-top: .5em;
+    margin-bottom: 1em;
+}
+
+#setEpoch, #shareEpoch {
+    margin-top: 5px; 
+    text-decoration: underline;
+    margin: 0;
+    display: inline;
+}
+
+#setEpoch:hover, #shareEpoch:hover {
+    cursor: pointer;
+}
+
 progress {
     margin-top: 2px;
 

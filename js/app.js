@@ -27,6 +27,7 @@ const nextMilestoneEl = document.getElementById("nextMilestone");
 const epochInputEl = document.getElementById("userInput");
 
 const setEpochButton = document.getElementById("setEpoch");
+const shareEpochButton = document.getElementById("shareEpoch");
 const setToNowButton = document.getElementById("setToNow");
 
 // the time that is being counted from
@@ -38,9 +39,6 @@ let epoch;
 (function initUI() {
     // get epoch from storage
     epoch = localStorage.getItem("epoch");
-
-    setEpochButton.onclick = getEpoch;
-    setToNowButton.onclick = () => epochInputEl.value = new Date().toISOString().slice(0, 16);
 
     // if the user has defined an epoch
     if (epoch)
@@ -58,8 +56,40 @@ let epoch;
     {
         getEpoch();
     }
+
+    // bind button actions
+    setEpochButton.onclick = getEpoch;
+    setToNowButton.onclick = () => epochInputEl.value = new Date().toISOString().slice(0, 16);
+    shareEpochButton.onclick = () => {
+        // check to make sure that a epoch is saved before creating URL
+        if (localStorage.getItem("epoch"))
+        {
+            // create URL for epoch
+            const anchor = encodeURIComponent(localStorage.getItem("epoch"));
+            const url = `${window.location.href}#${anchor}`;
+
+            // copy to clipboard
+            navigator.clipboard.writeText(url)
+                // success callback
+                .then(() => {
+                    alert("Epoch sharing URL copied successfully.");
+                },
+                // error callback
+                () => {
+                    alert("URL copying failed.");
+                });
+        }
+        // alert the user if they have not defined an epoch yet
+        else
+        {
+            alert("You have not set an epoch yet.");
+        }
+    }
 })();
 
+/**
+ * Show the epoch input screen to allow the user to define an epoch.
+ */
 function getEpoch() {
     // show input screen
     document.getElementById("inputScreen").style.display = "";
