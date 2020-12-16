@@ -10,6 +10,16 @@ body {
     padding: 10px;
 }
 
+button {
+    background: white;
+    color: black;
+
+    border: 1px solid black;
+    border-radius: 4px;
+
+    padding: .75em;
+}
+
 progress {
     margin-top: 2px;
 

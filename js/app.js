@@ -24,7 +24,10 @@ const secondsDisplay = document.getElementById("secondsDisplay");
 const lastMilestoneEl = document.getElementById("lastMilestone");
 const nextMilestoneEl = document.getElementById("nextMilestone");
 
+const epochInputEl = document.getElementById("userInput");
+
 const setEpochButton = document.getElementById("setEpoch");
+const setToNowButton = document.getElementById("setToNow");
 
 // the time that is being counted from
 let epoch;
@@ -37,6 +40,7 @@ let epoch;
     epoch = localStorage.getItem("epoch");
 
     setEpochButton.onclick = getEpoch;
+    setToNowButton.onclick = () => epochInputEl.value = new Date().toISOString().slice(0, 16);
 
     // if the user has defined an epoch
     if (epoch)
@@ -64,13 +68,19 @@ function getEpoch() {
     document.getElementById("bars").style.display = "none";
     document.getElementById("milestones").style.display = "none";
 
+    // show current epoch if one is defined
+    if (epoch)
+    {
+        epochInputEl.value = epoch.toISOString().slice(0, 16);
+    }
+
     // bind to submit button
     document.getElementById("saveDatetime").onclick = () => {
         // save date time
         localStorage.setItem("epoch", document.getElementById("userInput").value);
 
         // set as epoch
-        epoch = new Date(document.getElementById("userInput").value);
+        epoch = new Date(epochInputEl.value);
 
         // show bars read out
         document.getElementById("bars").style.display = "";
