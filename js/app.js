@@ -1,3 +1,5 @@
+const SAVE_LOCATION = "epoch";
+
 const yearsSection = document.getElementById("yearsSection");
 const yearsBar = document.getElementById("yearsProgress");
 const yearsDisplay = document.getElementById("yearsDisplay");
@@ -38,7 +40,29 @@ let epoch;
  */
 (function initUI() {
     // get epoch from storage
-    epoch = localStorage.getItem("epoch");
+    epoch = checkForLocalStorage() ? localStorage.getItem("epoch") : null;
+
+    // check if there is a epoch in the link, meaning that this is a share link
+    const url = window.location.href;
+    if (url.indexOf("#") != -1)
+    {
+        // get the anchor text and convert to date
+        const anchor = decodeURIComponent(url.substring(url.indexOf("#") + 1));
+        const date = new Date(anchor);
+
+        // check if is a valid date
+        if (!isNaN(date))
+        {
+            // save datetime
+            localStorage.setItem(SAVE_LOCATION, anchor);
+            
+            // set epoch
+            epoch = date;
+
+            // remove anchor
+            removeHash();
+        }
+    }
 
     // if the user has defined an epoch
     if (epoch)
@@ -63,7 +87,7 @@ let epoch;
     setToNowButton.onclick = () => epochInputEl.value = dateToLocalISO(new Date());
     shareEpochButton.onclick = () => {
         // check to make sure that a epoch is saved before creating URL
-        if (localStorage.getItem("epoch"))
+        if (localStorage.getItem(SAVE_LOCATION))
         {
             // create URL for epoch
             const anchor = encodeURIComponent(localStorage.getItem("epoch"));
@@ -108,7 +132,7 @@ function getEpoch() {
     // bind to submit button
     document.getElementById("saveDatetime").onclick = () => {
         // save date time
-        localStorage.setItem("epoch", document.getElementById("userInput").value);
+        localStorage.setItem(SAVE_LOCATION, document.getElementById("userInput").value);
 
         // set as epoch
         epoch = new Date(epochInputEl.value);
@@ -258,6 +282,24 @@ function updateDisplay() {
 }
 
 /**
+ * Check if localStorage exist and is available.
+ * https://stackoverflow.com/questions/16427636/check-if-localstorage-is-available/16427747
+ * @return {Boolean} localStorageExists
+ */
+function checkForLocalStorage(){
+    const test = "test";
+
+    try {
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+/**
  * https://stackoverflow.com/questions/17415579/how-to-iso-8601-format-a-date-with-timezone-offset-in-javascript
  * @param {Date} date
  * @returns {String} localizedISODateString
@@ -266,4 +308,12 @@ function dateToLocalISO(date) {
     const offset = date.getTimezoneOffset();
 
     return new Date(date.getTime() - offset * 60 * 1000).toISOString().substr(0,16);
+}
+
+/**
+ * Remove the anchor from a URL without refreshing or leaving the hash behind.
+ * https://stackoverflow.com/questions/1397329/how-to-remove-the-hash-from-window-location-url-with-javascript-without-page-r/5298684#5298684
+ */
+function removeHash () { 
+    history.pushState("", document.title, window.location.pathname + window.location.search);
 }
