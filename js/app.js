@@ -43,6 +43,7 @@ let epoch;
     // if the user has defined an epoch
     if (epoch)
     {
+        // convert epoch string to date object
         epoch = new Date(epoch);
 
         // calculate elapsed time
@@ -59,7 +60,7 @@ let epoch;
 
     // bind button actions
     setEpochButton.onclick = getEpoch;
-    setToNowButton.onclick = () => epochInputEl.value = new Date().toISOString().slice(0, 16);
+    setToNowButton.onclick = () => epochInputEl.value = dateToLocalISO(new Date());
     shareEpochButton.onclick = () => {
         // check to make sure that a epoch is saved before creating URL
         if (localStorage.getItem("epoch"))
@@ -101,7 +102,7 @@ function getEpoch() {
     // show current epoch if one is defined
     if (epoch)
     {
-        epochInputEl.value = epoch.toISOString().slice(0, 16);
+        epochInputEl.value = dateToLocalISO(epoch);
     }
 
     // bind to submit button
@@ -254,4 +255,15 @@ function updateDisplay() {
     // update milestone displays
     lastMilestoneEl.innerHTML = lastMilestone;
     nextMilestoneEl.innerHTML = nextMilestone;
+}
+
+/**
+ * https://stackoverflow.com/questions/17415579/how-to-iso-8601-format-a-date-with-timezone-offset-in-javascript
+ * @param {Date} date
+ * @returns {String} localizedISODateString
+ */
+function dateToLocalISO(date) {
+    const offset = date.getTimezoneOffset();
+
+    return new Date(date.getTime() - offset * 60 * 1000).toISOString().substr(0,16);
 }
