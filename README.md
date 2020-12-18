@@ -9,3 +9,4 @@ Track the amount of time that has past since a point in time.
 ## Why this tool?
 * Your data is only saved locally
 * Minimal, clean interface
+* Can easily sync across multiple devices with epoch link sharing
